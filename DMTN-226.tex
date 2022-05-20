@@ -75,6 +75,77 @@ In \S \ref{sec:implementation} we discuss steps necessary to allow ANTARES to su
 
 \section{Rubin Requirements for Alert Filtering} \label{sec:requirements}
 
+The top-level Science Requirements Document \citedsp{LPM-17} describes the AFS in narrative language:
+%
+\begin{quote}
+The users will have an option of a query-like pre-filtering of this data stream in order to select likely candidates for specific transient type...
+Several pre-defined filters optimized for traditionally popular transients, such as supernovae and microlensed sources, will
+also be available, as well as the ability to add new pre-defined filters as the survey continues.
+\end{quote}
+
+This is followed down into formal requirements as follows.
+
+LSR, \citedsp{LSE-29}:
+
+\textbf{LSR-REQ-0025 is supposed to be related but seems to be broken in current LSR}
+
+\begin{quote}
+Pre-defined filters optimized for traditionally popular transients shall be made available. 
+It shall be possible for the project to add new pre-defined filters as the survey progresses.
+\lsrreq{0026}
+\end{quote}
+
+% nothing in OSS
+
+DMSR, \citedsp{LSE-61}:
+
+\begin{quote}
+A basic, limited capacity, alert filtering service shall be provided that can be given user defined filters to reduce the alert stream to manageable levels.
+\dmreq{0342}
+\end{quote}
+
+\begin{quote}
+Users of the LSST Alert Filtering Service shall be able to use a predefined set of simple filters.
+\dmreq{0348}
+\end{quote}
+
+\begin{quote}
+The LSST alert filtering service shall support \texttt{numBrokerUsers} (20) simultaneous
+users with each user allocated a bandwidth capable of receiving the equivalent of
+\texttt{numBrokerAlerts} (100) alerts per visit.
+\dmreq{0343}
+\end{quote}
+
+Finally, the DPDD \citedsp{LSE-163} provides a narrative description of the expected functionality from an end-user perspective.
+
+\begin{quote}
+To directly serve the end-users, LSST will provide a basic, limited capacity, alert filtering service. 
+This service will run at the LSST U.S. Archive Center (at NCSA). It will let astronomers create simple filters that limit what alerts are ultimately forwarded to them. 
+These user defined
+filters will be possible to specify using an SQL-like declarative language, or short snippets of
+(likely Python) code. 
+For example, here's what a filter may look like:
+\textit{Code snippet removed}
+
+We emphasize that this LSST-provided capability will be limited, and is not intended to satisfy the wide variety of use cases that a full-fledged public Event Broker could. 
+For example, we do not plan to provide any exclusive classification to a unique category of object. 
+Following the SRD specification, however, we will provide a limited number of pre-defined filters for a small number of object types of common interest. 
+These will answer non-exclusive questions 
+such as “is the light curve consistent with an RR Lyra?”, and will have potentially highly overlapping selections, designed to provide good completeness but perhaps only very modest purity.
+No information beyond what is contained in the VOEvent packet will be available to the pre-defined or user-defined filters (e.g., no cross-matches to other catalogs). 
+The complexity and
+run time of user defined filters will be limited by available resources. 
+Execution latency will
+not be guaranteed. 
+The number of VOEvents transmitted to each user per visit will be limited as well (e.g., the equivalent of 20 full-size alert packets per visit per user, dynamically throttled depending on load). 
+Finally, the total number of simultaneous subscribers is likely to be limited---in case of overwhelming interest, a TAC-like proposal process may be instituted. 
+\end{quote}
+
+Implicit in the discussion above is that the AFS should be broadly useful the widest potential range of alert-driven science.
+Additionally, consistent with the Rubin Data Policy \citedsp{RDO-013}, the AFS should be accessible to any Rubin Data Rights holder.
+While the alert data itself is world-public, access to Rubin-hosted services like the AFS is restricted to Data Rights holders.
+However, there is no restriction on third parties offering similar filtering services.
+
 \section{The ANTARES Alert Broker} \label{sec:antares}
 
 \section{Implementing the Rubin AFS with ANTARES} \label{sec:implementation}
