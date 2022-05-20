@@ -16,7 +16,7 @@
 % \setDocSubtitle{A subtitle}
 
 \author{%
-Leanne Guy
+Leanne Guy, Eric C. Bellm
 }
 
 \setDocRef{DMTN-226}
@@ -28,7 +28,7 @@ Leanne Guy
 % \setDocCurator{The Curator of this Document}
 
 \setDocAbstract{%
-This document presents a strategy for the Alert Filtering System 
+This document presents a strategy for using the ANTARES alert broker as the Rubin Observatory Alert Filtering System.
 }
 
 % Change history defined here.
@@ -36,7 +36,7 @@ This document presents a strategy for the Alert Filtering System
 % Fields: VERSION, DATE, DESCRIPTION, OWNER NAME.
 % See LPM-51 for version number policy.
 \setDocChangeRecord{%
-  \addtohist{1}{YYYY-MM-DD}{Unreleased.}{Leanne Guy}
+  \addtohist{1}{YYYY-MM-DD}{Unreleased.}{Eric Bellm}
 }
 
 
@@ -49,6 +49,35 @@ This document presents a strategy for the Alert Filtering System
 
 % ADD CONTENT HERE
 % You can also use the \input command to include several content files.
+
+\section{Background}
+
+During steady-state operations, Rubin Observatory's LSST will produce about ten million world-public alerts of transients, variable, and moving objects.
+Science users will work with community alert brokers to crossmatch, filter, and classify these alerts in order to identify the subset that require real-time followup observations.
+At the time the vision for this ambitious and comprehensive alert system was developed, no community alert brokers were functional.
+Accordingly, the Rubin project provided a fallback: a simple ``alert filtering system'' (AFS; \S \ref{sec:requirements}) that the project would provide.
+The AFS would allow Rubin data-rights holders to apply simple user-defined or pre-defined filters to the Rubin alert stream.
+This minimized the risk that community alert brokers would not be available, or not provide the functionality required to fulfill users' needs.
+
+Today, the sitution is quite different.
+Seven community alert brokers\footnote{\url{https://www.lsst.org/scientists/alert-brokers}} have been approved for direct access to the full Rubin alert stream, with two more planning to operate downstream of a full-stream broker.
+The brokers have mature systems and active user bases and are operating on live Zwicky Transient Facility alerts.
+Several brokers have functionality which mirrors that planned for the Rubin AFS.
+Accordingly, the rationale for a project-provided AFS is less clear.
+
+However, it is reasonable for the Rubin project to ensure that Rubin data-rights holders have access to AFS-like capabilities throughout the survey, even if that service is provided by another entity.
+In this technote we propose a partnership with the ANTARES alert broker \citep{2021AJ....161..107M}, one of the seven approved full-stream brokers. 
+Like the Rubin Operations project, ANTARES operates as part of NOIRLab.
+
+In \S \ref{sec:requirements} we review the formal requirements for the Rubin AFS.
+\S \ref{sec:antares} describes the ANTARES alert broker.
+In \S \ref{sec:implementation} we discuss steps necessary to allow ANTARES to supply AFS functionality to the Rubin data rights community.
+
+\section{Rubin Requirements for Alert Filtering} \label{sec:requirements}
+
+\section{The ANTARES Alert Broker} \label{sec:antares}
+
+\section{Implementing the Rubin AFS with ANTARES} \label{sec:implementation}
 
 \appendix
 % Include all the relevant bib files.
