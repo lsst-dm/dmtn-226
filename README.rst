@@ -10,7 +10,7 @@ Rubin/LSST Alert Filtering System
 DMTN-226
 ========
 
-This document presents a strategy for the Alert Filtering System 
+This document presents a strategy for using the ANTARES alert broker as the Rubin Observatory Alert Filtering System.
 
 Links
 =====
