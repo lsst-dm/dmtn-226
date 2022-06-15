@@ -163,11 +163,12 @@ It also makes it convenient to attach multiwavelength crossmatch information.
 
 ANTARES offers a capability for user filtering of the alert stream.
 Users may write filters in Python using the ANTARES development kit\footnote{\url{https://noao.gitlab.io/antares/filter-documentation/devkit/index.html}}. 
-Filters filters may access all of the Locus information, including full timeseries history, catalog crossmatches, tags, and LIGO/Virgo detection information.
+Filters may access all of the Locus information, including full timeseries history, catalog crossmatches, tags, and LIGO/Virgo detection information.
 Filters may provide outputs to the ANTARES database, Slack, and Kafka streams.
 These features provide valuable additional functionality beyond the minimal requirements of the Rubin AFS, which operate only on single alert packets with no crossmatching.
+ANTARES also provides access to predefined alert filters.
 
-Filters are executed serially by ``Pipeline Worker'' jobs run under Kubernetes, each of which attaches to a Kafka partition.
+Filters are executed serially by ``Pipeline Worker'' jobs run inside Kubernetes, each of which attaches to a Kafka partition.
 Due to this design, user filters are not sandboxed from each other.
 Filters executed downstream can see tags applied by upstream filters and may be slowed by upstream filter execution.
 The ANTARES team mitigates these issues by reviewing filters before they are put into production and monitoring the operation of the filtering system.
@@ -178,13 +179,11 @@ While having filters operate on Locus objects enables more scientific utility fo
 Packet-based filtering of attributed Solar System Objects would be sufficient to satisfy the requirements of the Rubin AFS.
 This is not a current capability of ANTARES, although ANTARES does provide a stream of alerts from known Solar System Objects to the SNAPS solar system broker.
 
-\textbf{ANTARES team numbers would be useful here.}
-Currently, ANTARES executes \textbf{N} public and private filters on \textbf{typically half a million alerts nightly}.
-Filters in use today pass a median/maximum of \textbf{N\%} of alerts.
-\textbf{(Since the filter outputs are implemented as tags, however, there are not strong technical pressures to limit the number of alerts which pass a filter, except in cases where the alerts are sent downstream through secondary Kafka streams.)}
+Currently, ANTARES executes 21 public and private filters on typically half a million alerts nightly.
+Filters in use today pass an average of 11\% of alerts.
+(Since the filter outputs are implemented as tags, however, there are not strong technical pressures to limit the number of alerts which pass a filter, except in cases where the alerts are sent downstream through secondary Kafka streams.)
 These results suggest that ANTARES filtering can support the Rubin-required \texttt{numBrokerUsers} and \texttt{numBrokerAlerts}, although the ZTF-scale testing does not conclusively demonstrate performance at the scale of 10 million nightly Rubin alerts.
-However, the ANTARES team has performed scale testing that suggests acceptable performance at Rubin scale with planned hardware upgrades \textbf{ANARES to confirm}.
-ANTARES also provides access to predefined alert filters.
+However, the ANTARES team has performed scale testing that suggests acceptable performance at Rubin scale with planned hardware upgrades.
 
 We thus conclude that it is highly likely that the ANTARES filtering service can meet the technical requirements of the Rubin AFS.
 The use of the Locus aggregation as an input to the filters provides scientifically valuable capabilities beyond the minimum requirements, but makes handling Solar System alerts more difficult.
