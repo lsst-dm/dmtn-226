@@ -36,7 +36,8 @@ This document presents a strategy for using the ANTARES alert broker as the Rubi
 % Fields: VERSION, DATE, DESCRIPTION, OWNER NAME.
 % See LPM-51 for version number policy.
 \setDocChangeRecord{%
-  \addtohist{1}{YYYY-MM-DD}{Unreleased.}{Eric Bellm}
+  \addtohist{1}{2022-08-02}{Initial draft.}{Eric Bellm}
+  \addtohist{2}{2023-06-14}{Update implementation section.}{Eric Bellm}
 }
 
 
@@ -147,12 +148,40 @@ Additionally, consistent with the Rubin Data Policy \citedsp{RDO-013}, the AFS s
 While the alert data itself is world-public, access to Rubin-hosted services like the AFS is restricted to Data Rights holders.
 However, there is no restriction on third parties offering similar filtering services.
 
+\citeds{LDM-554} provides several requirements on the Portal aspect of the Rubin Science Platform to provide appropriate user interfaces to the AFS.
+
+\begin{quote}
+  The Portal aspect shall provide an interface to the alert subscription service that allows authenticated users with LSST data rights to subscribe to a stream of alert events.
+  \reqparam{DMS-PRTL-REQ-0119}
+\end{quote}
+
+\begin{quote}
+  The Portal aspect shall provide an interface to permit alert subscriptions to be
+configured with Project-provided alert filters.
+  \reqparam{DMS-PRTL-REQ-0120}
+\end{quote}
+
+\begin{quote}
+  The Portal aspect shall provide an interface to permit alert subscriptions to be
+  configured with user-defined alert filters. 
+  \reqparam{DMS-PRTL-REQ-0121}
+\end{quote}
+
+\begin{quote}
+  The Portal aspect shall report feedback about the status and performance of
+a user’s filters in the alert subscription service.
+  \reqparam{DMS-PRTL-REQ-0127}
+\end{quote}
+
+
+
 During Rubin Project development of the AFS, additional unofficial ``desirements'' were collected\footnote{\url{https://confluence.lsstcorp.org/display/~ebellm/Mini-Broker+Use+Cases+and+Draft+Requirements}}.
 
 \section{The ANTARES Alert Broker} \label{sec:antares}
 
-ANTARES is a community alert broker that has been operating on ZTF alerts since 2018 and is approved for full stream access to LSST alerts.
-It provides a wide range of services to registered users from around the world, including alert visualization; rich positional and property searches; output Kafka streams; user watchlists; and rapid alerting via Slack.
+ANTARES is a community alert broker that has been operating on alerts from the Zwicky Transient Facility (ZTF) since 2018 and is approved for full stream access to LSST alerts.
+ZTF's public alert stream anticipates Rubin's both scientifically and technically and so provides a useful precursor for validating alert stream use cases prior to the start of the LSST.
+ANTARES offers a wide range of services to registered users from around the world, including alert visualization; rich positional and property searches; output Kafka streams; user watchlists; and rapid alerting via Slack.
 ANTARES also serves as the ``upstream'' broker for the SNAPS solar system broker.
 
 ANTARES uses a ``Locus'' abstraction for timeseries data.
@@ -202,16 +231,57 @@ in Tucson to discuss whether the ANTARES filtering system could serve as the Rub
 A follow-on video conference was held in April 2022.
 Participants in the latter teleconference agreed that the simplest and thus most cost-effective course of action would be to explore how the ANTARES-hosted filtering service could provide the functionality of the Rubin AFS.
 
-We identify the following open questions which should be resolved to finalize this understanding:
+Subsequent dialogue achieved convergence on the following topics.
 
-\begin{itemize}
-  \item Can the ANTARES team confirm that their filtering service operates successfully at the throughput required for the Rubin AFS?  Are there special considerations needed for ensuring access for Rubin Data Rights holders?
-  \item How can we ensure that basic Solar System alert filtering can be conducted?  Is additional ANTARES development needed? Could the SNAPS downstream broker team fulfill some or all of these needs?
-\item What level of additional operational effort (if any) relative to the baseline ANTARES plan is required to meet the Rubin needs?  If so, can the appropriate color-of-money issues be resolved by Rubin Operations and the CSDC?
-\item What degree of interoperability between ANTARES and the Rubin Science Platform is desirable and achievable?
-\item What activities are needed to commission an ANTARES-hosted AFS, and on what timescale should they occur?  (The relevant DM milestone DM-AP-14\footnote{\url{https://dmtn-158.lsst.io/\#dm-ap-14}} is currently due in January 2024.)
-  \item Are formal SLAs or MOAs between Rubin and ANTARES needed?
-\end{itemize}
+\subsection{Alert Throughput}
+
+ANTARES report cloud scaling tests run in GCP show that the ANTARES system can handle the average LSST alert rate (10,000 alerts every 39 seconds) with 100--150 nodes.
+Performance optimization is ongoing.
+
+\subsection{Access to Rubin Data Rights Holders}
+
+Currently ANTARES services are open to all users.  
+The ANTARES team expect to easily support the number of Rubin Data Rights holders (20) specified in DMS-REQ-0343.
+In case of significant demand in excess of ANTARES capacity, particularly from non-Data Rights holders, a resource allocation committee might be required to determine the best way to ensure the required level of service.
+
+\subsection{Filtering of Solar System Objects}
+
+The ANTARES architecture is built around non-moving objects but can easily extract light curves of known objects from our its locus database containing alerts. 
+Solar System filtering to capture all known objects from ZTF is running nightly already with no further ANTARES development required. 
+The SNAPS downstream broker currently is receiving this stream of Solar System Objects, and that is where filtering for activity or behavioral change would best be run.
+\subsection{Predefined Filters}
+
+The ANTARES system already contains public, predefined filters which would enable formal verification of the relevant requirement (LSR-REQ-0026).
+Additional collaboration between the Rubin Project, the ANTARES team, and interested science users would be valuable to broaden the range and quality of the predefined filters.
+
+\subsection{Linkages between ANTARES and the Rubin Science Platform}
+
+The \citeds{LDM-554} Portal requirements listed above should be reviewed.
+Some could be descoped in favor of existing ANTARES functionality.
+
+\subsection{Plan for Commissioning the ANTARES-AFS}
+
+The ANTARES-provided filtering system must be formally commissioned.  
+We propose to use the same activities planned for integrating community brokers more generally; see \citeds{RTN-011}.
+
+\subsubsection{Verification}
+
+The major verification activity will be to develop and load 20 ANTARES filters configured to run on Rubin alerts; to send a simulated LSST alert stream based on DP0.2 processed images from the USDF; and to ensure that the throughput requirements are met.  
+
+\subsubsection{Validation}
+
+Existing handling of the ZTF alerts by the ANTARES system already provides a great deal of real-world scientific validation.
+We will have limited ability to further validate the ANTARES alert filtering system on Rubin data in advance of public LSST alerts.
+\citeds{RTN-061} describes the process for beginning public Alert Production; we expect alerts to be released to all community brokers publically as soon as they can be generated reliably.
+Sample alerts from Rubin-processed precursor surveys can serve as test datasets for development of predefined filters.
+
+
+\subsubsection{Timeline}
+
+The relevant DM milestone DM-AP-14\footnote{\url{https://dmtn-158.lsst.io/\#dm-ap-14}} is currently due in January 2024.
+\subsection{Agreements}
+
+We expect the above understanding to be codified in a memo between the Rubin and CSDC Directors.
 
 \appendix
 % Include all the relevant bib files.
