@@ -3,9 +3,9 @@
 .. image:: https://github.com/lsst-dm/dmtn-226/workflows/CI/badge.svg
    :target: https://github.com/lsst-dm/dmtn-226/actions/
 
-#################################
-Rubin/LSST Alert Filtering System
-#################################
+###############################################################
+Implementing the Rubin/LSST Alert Filtering System with ANTARES
+###############################################################
 
 DMTN-226
 ========
