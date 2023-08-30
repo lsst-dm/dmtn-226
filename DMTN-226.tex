@@ -111,9 +111,9 @@ Users of the LSST Alert Filtering Service shall be able to use a predefined set 
 \end{quote}
 
 \begin{quote}
-The LSST alert filtering service shall support \texttt{numBrokerUsers} (20) simultaneous
+The LSST alert filtering service shall support \texttt{numBrokerUsers} (100) simultaneous
 users with each user allocated a bandwidth capable of receiving the equivalent of
-\texttt{numBrokerAlerts} (100) alerts per visit.
+\texttt{numBrokerAlerts} (20) alerts per visit.
 \dmreq{0343}
 \end{quote}
 
@@ -241,7 +241,7 @@ Performance optimization is ongoing.
 \subsection{Access to Rubin Data Rights Holders}
 
 Currently ANTARES services are open to all users.  
-The ANTARES team expect to easily support the number of Rubin Data Rights holders (20) specified in DMS-REQ-0343.
+The ANTARES team expect to easily support the number of Rubin Data Rights holders (100) specified in DMS-REQ-0343 \citedsp{LSE-61}\dmreq{0343}.
 In case of significant demand in excess of ANTARES capacity, particularly from non-Data Rights holders, a resource allocation committee might be required to determine the best way to ensure the required level of service.
 
 \subsection{Filtering of Solar System Objects}
@@ -251,7 +251,7 @@ Solar System filtering to capture all known objects from ZTF is running nightly 
 The SNAPS downstream broker currently is receiving this stream of Solar System Objects, and that is where filtering for activity or behavioral change would best be run.
 \subsection{Predefined Filters}
 
-The ANTARES system already contains public, predefined filters which would enable formal verification of the relevant requirement (LSR-REQ-0026).
+The ANTARES system already contains public, predefined filters which would enable formal verification of the relevant requirement (LSR-REQ-0026; \citeds{LSE-29})\lsrreq{0026}.
 Additional collaboration between the Rubin Project, the ANTARES team, and interested science users would be valuable to broaden the range and quality of the predefined filters.
 
 \subsection{Linkages between ANTARES and the Rubin Science Platform}
